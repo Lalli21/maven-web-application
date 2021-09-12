@@ -1,4 +1,5 @@
-node('wallmart-node'){
+node
+{
 
  def mavenHome = tool name: "maven3.8.2"
  
@@ -12,7 +13,7 @@ node('wallmart-node'){
 
  stage('CheckOutCode')
  {
- git branch: 'development', credentialsId: '12993250-1ff3-40a0-9978-794e74dcf712', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
+   credentialsId: '522332f9-f26f-4193-b6bb-df8d1710729b', url: 'https://github.com/Lalli21/maven-web-application'
  }
  
  stage('Build')
