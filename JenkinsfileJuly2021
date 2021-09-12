@@ -13,8 +13,8 @@ node
 
  stage('CheckOutCode')
  {
-   credentialsId: '522332f9-f26f-4193-b6bb-df8d1710729b', url: 'https://github.com/Lalli21/maven-web-application'
- }
+  git credentialsId: '522332f9-f26f-4193-b6bb-df8d1710729b', url: 'https://github.com/Lalli21/maven-web-application'
+}
  
  stage('Build')
  {
