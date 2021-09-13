@@ -12,30 +12,11 @@ node
  {
   sh "${mavenHome}/bin/mvn clean package"
  }
-
-/*
- stage('SonarQubeReport'){
- sh "${mavenHome}/bin/mvn clean sonar:sonar"
- }
- 
- 
- stage('UploadArtifactIntoNexus'){
- sh "${mavenHome}/bin/mvn clean deploy"
- }
- 
- stage('SendEmailNotification'){
-   emailext body: '''Build is over !!
-
-   Regards,
-   Mithun Technologies,
-   9980923226''', subject: 'Build Over... !!', to: 'devopstrainingblr@gmail.com'
- }
- */
  stage('DeployAppIntoTomcatServer')
  {
    sshagent(['49d524fa-a264-4c6f-bb39-6161179342ab'])
    {
-       sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@54.235.227.210:/opt/apache-tomcat-9.0.52/webapps/"
+       sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@34.238.240.4:/opt/apache-tomcat-9.0.52/webapps/"
    }
  }
  
