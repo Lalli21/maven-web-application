@@ -1,0 +1,37 @@
+node 
+{
+   
+    stage("git clone")
+    {
+        git url:"https://github.com/Lalli21/maven-web-application"
+    }
+    stage("mvn clean package")
+    {
+        def mavenHome= tool name: "maven", type: "maven"
+        sh "${mavenHome}/bin/mvn clean package"
+    
+    }
+    stage("build docker image")
+    {
+        sh "docker build -t jlalitha21/maven-web-app:2 ."
+        
+    }
+    stage("docker login and push")
+    {
+        withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+            sh "docker login -u jlalitha21 -p ${dockerhubpwd}"
+            sh "docker push jlalitha21/maven-web-app:2"
+        }
+    
+    }
+    stage("deploy app as docker container")
+    {
+        sshagent(['deployment']) {
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.18.139 docker rm -f webappcontainer || true"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.18.139 docker run -d -p 8080:8080 --name webappcontainer jlalitha21/maven-web-app:2"
+        }
+    
+    
+    }
+
+}
