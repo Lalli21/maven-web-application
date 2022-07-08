@@ -1,0 +1,35 @@
+pipeline
+{
+ agents any
+      def mavenHome = tool name: "maven_3.8.2"
+  stages
+  {
+    stage
+    {
+      steps ("CheckoutCode")
+      {
+        git credentialsId: '522332f9-f26f-4193-b6bb-df8d1710729b', url: 'https://github.com/Lalli21/maven-web-application'
+      }
+    }  
+      stage
+     {
+        steps ("Build")
+      {
+         sh "${mavenHome}/bin/mvn clean package"
+      }
+    }
+    stage
+    {
+       steps ('DeploytoContainer')
+       {
+        sshagent(['49d524fa-a264-4c6f-bb39-6161179342ab'])
+         {
+           sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@54.235.227.210:/opt/apache-tomcat-9.0.52/webapps/"
+          }
+       }
+    }
+  }
+}
+        
+      
+
